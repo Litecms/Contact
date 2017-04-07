@@ -34,11 +34,6 @@
                 
 
                 <div class='col-md-4 col-sm-6'>
-                       {!! Form::text('address_line1')
-                       -> label(trans('contact::contact.label.address_line1'))
-                       -> placeholder(trans('contact::contact.placeholder.address_line1'))!!}
-                </div>
-                <div class='col-md-4 col-sm-6'>
                        {!! Form::textarea('details')
                        ->rows(4)
                        -> label(trans('contact::contact.label.details'))
@@ -46,9 +41,9 @@
                 </div>
 
                 <div class='col-md-4 col-sm-6'>
-                       {!! Form::text('address_line2')
-                       -> label(trans('contact::contact.label.address_line2'))
-                       -> placeholder(trans('contact::contact.placeholder.address_line2'))!!}
+                       {!! Form::text('address')
+                       -> label(trans('contact::contact.label.address'))
+                       -> placeholder(trans('contact::contact.placeholder.address'))!!}
                 </div>
 
                 <div class='col-md-4 col-sm-6'>
@@ -64,15 +59,22 @@
                 </div>
 
                 <div class='col-md-4 col-sm-6'>
+                       {!! Form::text('state')
+                       -> label(trans('contact::contact.label.state'))
+                       -> placeholder(trans('contact::contact.placeholder.state'))!!}
+                </div>
+
+
+                <div class='col-md-4 col-sm-6'>
                        {!! Form::text('country')
                        -> label(trans('contact::contact.label.country'))
                        -> placeholder(trans('contact::contact.placeholder.country'))!!}
                 </div>
 
                 <div class='col-md-4 col-sm-6'>
-                       {!! Form::text('pin_code')
-                       -> label(trans('contact::contact.label.pin_code'))
-                       -> placeholder(trans('contact::contact.placeholder.pin_code'))!!}
+                       {!! Form::text('zip')
+                       -> label(trans('contact::contact.label.zip'))
+                       -> placeholder(trans('contact::contact.placeholder.zip'))!!}
                 </div>
                  <div class='col-md-4 col-sm-6'>
                        {!! Form::select('status')

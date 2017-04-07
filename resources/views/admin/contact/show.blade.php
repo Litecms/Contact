@@ -3,7 +3,6 @@
         <ul class="nav nav-tabs primary">
             <li class="active"><a href="#details" data-toggle="tab">  {!! trans('contact::contact.name') !!}</a></li>
             <div class="box-tools pull-right">
-                @include('contact::admin.contact.partial.workflow')
                 <button type="button" class="btn btn-success btn-sm" data-action='NEW' data-load-to='#contact-contact-entry' data-href='{{trans_url('admin/contact/contact/create')}}'><i class="fa fa-plus-circle"></i> {{ trans('app.new') }}</button>
                 @if($contact->id )
                 <button type="button" class="btn btn-primary btn-sm" data-action="EDIT" data-load-to='#contact-contact-entry' data-href='{{ trans_url('/admin/contact/contact') }}/{{$contact->getRouteKey()}}/edit'><i class="fa fa-pencil-square"></i> {{ trans('app.edit') }}</button>

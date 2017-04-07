@@ -5,7 +5,7 @@ namespace Litecms\Contact\Http\Requests;
 use App\Http\Requests\Request as FormRequest;
 use Illuminate\Http\Request;
 
-class ContactAdminRequest extends FormRequest
+class ContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
