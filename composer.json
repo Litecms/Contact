@@ -1,0 +1,23 @@
+{
+    "name": "litecms/contact",
+    "description": "Contact package for litecms.",
+    "keywords": ["lavalite", "Contact"],
+    "license": "MIT",
+    "type": "lavalite-package",
+    "homepage": "https://github.com/Litecms/Contact",
+    "authors": [
+        {
+            "name": "Lavalite",
+            "email": "info@lavalite.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Litecms\\Contact\\": "/"
+        }
+    },
+    "minimum-stability": "dev"
+}
