@@ -26,6 +26,9 @@ class ContactServiceProvider extends ServiceProvider
         // Load translation
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'contact');
 
+        // Load migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         // Call pblish redources function
         $this->publishResources();
 
@@ -79,12 +82,6 @@ class ContactServiceProvider extends ServiceProvider
 
         // Publish language files
         $this->publishes([__DIR__ . '/../resources/lang' => base_path('resources/lang/vendor/contact')], 'lang');
-
-        // Publish migrations
-        $this->publishes([__DIR__ . '/../database/migrations/' => base_path('database/migrations')], 'migrations');
-
-        // Publish seeds
-        $this->publishes([__DIR__ . '/../database/seeds/' => base_path('database/seeds')], 'seeds');
 
         // Publish public
         $this->publishes([__DIR__ . '/../public' => public_path('/')], 'public');
