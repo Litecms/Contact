@@ -25,11 +25,6 @@ And also add it to alias
 
 Use the below commands for publishing
 
-Migration and seeds
-
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="migrations"
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="seeds"
-
 Configuration
 
     php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="config"
@@ -38,10 +33,9 @@ Language
 
     php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="lang"
 
-Views public and admin
+Views 
 
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="view-public"
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="view-admin"
+    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="view"
 
 Publish admin views only if it is necessary.
 
