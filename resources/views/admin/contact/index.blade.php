@@ -1,47 +1,46 @@
-@extends('admin::curd.index')
-@section('heading')
-<i class="fa fa-file-text-o"></i> {!! trans('contact::contact.name') !!} <small> {!! trans('app.manage') !!} {!! trans('contact::contact.names') !!}</small>
-@stop
-
-@section('title')
-{!! trans('contact::contact.names') !!}
-@stop
-
-@section('breadcrumb')
-<ol class="breadcrumb">
-    <li><a href="{!! trans_url('admin') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
-    <li class="active">{!! trans('contact::contact.names') !!}</li>
-</ol>
-@stop
-
-@section('entry')
-<div id='contact-contact-entry'>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-file-text-o"></i> {!! trans('contact::contact.name') !!} <small> {!! trans('app.manage') !!} {!! trans('contact::contact.names') !!}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{!! trans_url('admin') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
+            <li class="active">{!! trans('contact::contact.names') !!}</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+    <div id='contact-contact-entry'>
+    </div>
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs primary">
+                <li class="active"><a href="#tab-pages-active" data-toggle="tab">{!! trans('contact::contact.names') !!}</a></li>
+            </ul>
+            <div class="tab-content">
+            <table id="contact-contact-list" class="table table-striped data-table">
+                <thead class="list_head">
+                    <th>{!! trans('contact::contact.label.name')!!}</th>
+                                <th>{!! trans('contact::contact.label.phone')!!}</th>
+                                <th>{!! trans('contact::contact.label.mobile')!!}</th>
+                                <th>{!! trans('contact::contact.label.email')!!}</th>
+                                <th>{!! trans('contact::contact.label.city')!!}</th>
+                </thead>
+                <thead  class="search_bar">
+                    <th>{!! Form::text('search[name]')->raw()!!}</th>
+                                <th>{!! Form::text('search[phone]')->raw()!!}</th>
+                                <th>{!! Form::text('search[mobile]')->raw()!!}</th>
+                                <th>{!! Form::text('search[email]')->raw()!!}</th>
+                                <th>{!! Form::text('search[city]')->raw()!!}</th>
+                </thead>
+            </table>
+            </div>
+        </div>
+    </section>
 </div>
-@stop
 
-@section('tools')
-@stop
 
-@section('content')
-<table id="contact-contact-list" class="table table-striped data-table">
-    <thead class="list_head">
-        <th>{!! trans('contact::contact.label.name')!!}</th>
-                    <th>{!! trans('contact::contact.label.phone')!!}</th>
-                    <th>{!! trans('contact::contact.label.mobile')!!}</th>
-                    <th>{!! trans('contact::contact.label.email')!!}</th>
-                    <th>{!! trans('contact::contact.label.city')!!}</th>
-    </thead>
-    <thead  class="search_bar">
-        <th>{!! Form::text('search[name]')->raw()!!}</th>
-                    <th>{!! Form::text('search[phone]')->raw()!!}</th>
-                    <th>{!! Form::text('search[mobile]')->raw()!!}</th>
-                    <th>{!! Form::text('search[email]')->raw()!!}</th>
-                    <th>{!! Form::text('search[city]')->raw()!!}</th>
-    </thead>
-</table>
-@stop
-
-@section('script')
 <script type="text/javascript">
 
 var oTable;
@@ -98,8 +97,3 @@ $(document).ready(function(){
     });
 });
 </script>
-@stop
-
-@section('style')
-@stop
-

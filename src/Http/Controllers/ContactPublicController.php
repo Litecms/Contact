@@ -33,7 +33,7 @@ class ContactPublicController extends BaseController
      */
     protected function index()
     {
-        $this->theme->asset()->container('footer')->add('gmap', 'https://maps.googleapis.com/maps/api/js?key=' . config('litecms.contact.gmapapi'));
+        $this->response->theme->asset()->container('footer')->add('gmap', 'https://maps.googleapis.com/maps/api/js?key=' . config('litecms.contact.gmapapi'));
 
         $contact = $this->repository
             ->pushCriteria(app('Litepie\Repository\Criteria\RequestCriteria'))
@@ -41,9 +41,10 @@ class ContactPublicController extends BaseController
                 return $query->orderBy('id', 'DESC');
             })->first();
 
-        $this->theme->prependTitle(trans('contact::contact.names'));
-
-        return $this->theme->of('contact::public.contact.index', compact('contact'))->render();
+        return $this->response->title(trans('contact::contact.names'))
+            ->view('contact::public.contact.index')
+            ->data(compact('contact'))
+            ->output();
     }
 
     /**
@@ -58,7 +59,7 @@ class ContactPublicController extends BaseController
         $data = $request->all();
         Mail::send('contact::public.emails.message', compact('data'), function ($message) use ($data) {
             $message->setReplyTo($data['email'], $data['name']);
-            $message->to(config('litecms.contact.mail_to_email'),config('litecms.contact.mail_to_name'));
+            $message->to(config('litecms.contact.mail_to_email'), config('litecms.contact.mail_to_name'));
             $message->subject(config('litecms.contact.mail_subject'));
         });
 

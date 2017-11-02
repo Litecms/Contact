@@ -2,7 +2,7 @@
 
 namespace Litecms\Contact\Http\Controllers;
 
-use App\Http\Controllers\AdminController as BaseController;
+use App\Http\Controllers\ResourceController as BaseController;
 use Form;
 use Litecms\Contact\Http\Requests\ContactRequest;
 use Litecms\Contact\Interfaces\ContactRepositoryInterface;
@@ -11,9 +11,10 @@ use Litecms\Contact\Models\Contact;
 /**
  * Admin web controller class.
  */
-class ContactAdminController extends BaseController
+class ContactResourceController extends BaseController
 {
-    // use ContactWorkflow;
+
+// use ContactWorkflow;
     /**
      * Initialize contact controller.
      *
@@ -23,8 +24,11 @@ class ContactAdminController extends BaseController
      */
     public function __construct(ContactRepositoryInterface $contact)
     {
-        $this->repository = $contact;
         parent::__construct();
+        $this->repository = $contact;
+        $this->repository
+            ->pushCriteria(\Litepie\Repository\Criteria\RequestCriteria::class)
+            ->pushCriteria(\Litecms\Contact\Repositories\Criteria\ContactResourceCriteria::class);
     }
 
     /**
@@ -34,36 +38,24 @@ class ContactAdminController extends BaseController
      */
     public function index(ContactRequest $request)
     {
-        $this->theme->asset()->container('footer')->add('gmap','https://maps.googleapis.com/maps/api/js?key='.config('litecms.contact.gmapapi'));
-        
-        if ($request->wantsJson()) {
-            return $this->getJson($request);
+        if ($this->response->typeIs('json')) {
+            $pageLimit = $request->input('pageLimit');
+            $data      = $this->repository
+                ->setPresenter(\Litecms\Contact\Repositories\Presenter\ContactListPresenter::class)
+                ->getDataTable($pageLimit);
+            return $this->response
+                ->data($data)
+                ->output();
         }
-        $this   ->theme->prependTitle(trans('contact::contact.names').' :: ');
-        return $this->theme->of('contact::admin.contact.index')->render();
+
+        $this->response->theme->asset()->container('footer')->add('gmap', 'https://maps.googleapis.com/maps/api/js?key=' . config('litecms.contact.gmapapi'));
+
+        return $this->response->title(trans('contact::contact.names'))
+            ->view('contact::admin.contact.index')
+            ->data(compact('contacts'))
+            ->output();
     }
 
-    /**
-     * Display a list of contact.
-     *
-     * @return Response
-     */
-    public function getJson(ContactRequest $request)
-    {
-        $pageLimit = $request->input('pageLimit');
-
-        $contacts  = $this->repository
-                ->pushCriteria(app('Litepie\Repository\Criteria\RequestCriteria'))
-                ->setPresenter('\\Litecms\\Contact\\Repositories\\Presenter\\ContactListPresenter')
-                ->scopeQuery(function($query){
-                    return $query->orderBy('id','DESC');
-                })->paginate($pageLimit);
-        $contacts['recordsTotal']    = $contacts['meta']['pagination']['total'];
-        $contacts['recordsFiltered'] = $contacts['meta']['pagination']['total'];
-        $contacts['request']         = $request->all();
-        return response()->json($contacts, 200);
-
-    }
 
     /**
      * Display contact.
@@ -75,13 +67,19 @@ class ContactAdminController extends BaseController
      */
     public function show(ContactRequest $request, Contact $contact)
     {
-        if (!$contact->exists) {
-            return response()->view('contact::admin.contact.new', compact('contact'));
+
+        if ($contact->exists) {
+            $view = 'contact::admin.contact.show';
+        } else {
+            $view = 'contact::admin.contact.new';
         }
 
-        Form::populate($contact);
-        return response()->view('contact::admin.contact.show', compact('contact'));
+        return $this->response->title(trans('app.view') . ' ' . trans('contact::contact.name'))
+            ->data(compact('contact'))
+            ->view($view)
+            ->output();
     }
+
 
     /**
      * Show the form for creating a new contact.
@@ -111,23 +109,23 @@ class ContactAdminController extends BaseController
     public function store(ContactRequest $request)
     {
         try {
-            $attributes             = $request->all();
-            $attributes['user_id']  = user_id('admin.web');
-            $contact          = $this->repository->create($attributes);
+            $attributes            = $request->all();
+            $attributes['user_id'] = user_id('admin.web');
+            $contact               = $this->repository->create($attributes);
 
             return response()->json([
                 'message'  => trans('messages.success.updated', ['Module' => trans('contact::contact.name')]),
                 'code'     => 204,
-                'redirect' => trans_url('/admin/contact/contact/'.$contact->getRouteKey())
+                'redirect' => trans_url('/admin/contact/contact/' . $contact->getRouteKey()),
             ], 201);
-
 
         } catch (Exception $e) {
             return response()->json([
-                'message'  => $e->getMessage(),
-                'code'     => 400,
+                'message' => $e->getMessage(),
+                'code'    => 400,
             ], 400);
         }
+
     }
 
     /**
@@ -141,7 +139,7 @@ class ContactAdminController extends BaseController
     public function edit(ContactRequest $request, Contact $contact)
     {
         Form::populate($contact);
-        return  response()->view('contact::admin.contact.edit', compact('contact'));
+        return response()->view('contact::admin.contact.edit', compact('contact'));
     }
 
     /**
@@ -163,7 +161,7 @@ class ContactAdminController extends BaseController
             return response()->json([
                 'message'  => trans('messages.success.updated', ['Module' => trans('contact::contact.name')]),
                 'code'     => 204,
-                'redirect' => trans_url('/admin/contact/contact/'.$contact->getRouteKey())
+                'redirect' => trans_url('/admin/contact/contact/' . $contact->getRouteKey()),
             ], 201);
 
         } catch (Exception $e) {
@@ -171,10 +169,11 @@ class ContactAdminController extends BaseController
             return response()->json([
                 'message'  => $e->getMessage(),
                 'code'     => 400,
-                'redirect' => trans_url('/admin/contact/contact/'.$contact->getRouteKey()),
+                'redirect' => trans_url('/admin/contact/contact/' . $contact->getRouteKey()),
             ], 400);
 
         }
+
     }
 
     /**
@@ -202,9 +201,10 @@ class ContactAdminController extends BaseController
             return response()->json([
                 'message'  => $e->getMessage(),
                 'code'     => 400,
-                'redirect' => trans_url('/admin/contact/contact/'.$contact->getRouteKey()),
+                'redirect' => trans_url('/admin/contact/contact/' . $contact->getRouteKey()),
             ], 400);
         }
+
     }
 
 }

@@ -3,7 +3,6 @@
 namespace Litecms\Contact\Http\Requests;
 
 use App\Http\Requests\Request as FormRequest;
-use Illuminate\Http\Request;
 
 class ContactRequest extends FormRequest
 {
@@ -12,32 +11,37 @@ class ContactRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(Request $request)
+    public function authorize()
     {
-        $contact = $this->route('contact');
+        $this->model = $this->route('contact');
 
-        if (is_null($contact)) {
+        if (is_null($this->model)) {
             // Determine if the user is authorized to access contact module,
-            return $request->user('admin.web')->canDo('contact.contact.view');
+            return $this->formRequest->user($this->guard)->canDo('contact.contact.view');
         }
 
-        if ($request->isMethod('POST') || $request->is('*/create')) {
+        if ($this->isWorkflow()) {
+            // Determine if the user is authorized to change status of an entry,
+            return $this->can($this->getStatus());
+        }
+
+        if ($this->isCreate() || $this->isStore()) {
             // Determine if the user is authorized to create an entry,
-            return $request->user('admin.web')->can('create', $contact);
+            return $this->can('create');
         }
 
-        if ($request->isMethod('PUT') || $request->isMethod('PATCH') || $request->is('*/edit')) {
+        if ($this->isEdit() || $this->isUpdate()) {
             // Determine if the user is authorized to update an entry,
-            return $request->user('admin.web')->can('update', $contact);
+            return $this->can('update');
         }
 
-        if ($request->isMethod('DELETE')) {
+        if ($this->isDelete()) {
             // Determine if the user is authorized to delete an entry,
-            return $request->user('admin.web')->can('delete', $contact);
+            return $this->can('delete');
         }
 
         // Determine if the user is authorized to view the module.
-        return $request->user('admin.web')->can('view', $contact);
+        return $this->can('view');
 
     }
 
@@ -46,21 +50,19 @@ class ContactRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-
-        if ($request->isMethod('POST')) {
+        if ($this->isStore()) {
             // validation rule for create request.
             return [
-                'name' => 'required',
 
             ];
         }
 
-        if ($request->isMethod('PUT') || $request->isMethod('PATCH')) {
+        if ($this->isUpdate()) {
             // Validation rule for update request.
             return [
-                'name' => 'required',
+
             ];
         }
 
@@ -69,5 +71,4 @@ class ContactRequest extends FormRequest
 
         ];
     }
-
 }
