@@ -56,7 +56,7 @@ class ContactPolicy
             return true;
         }
 
-        return $user->id === $contact->user_id;
+        return $user->id == $contact->user_id;
     }
 
     /**
@@ -79,7 +79,7 @@ class ContactPolicy
             return true;
         }
 
-        return $user->id === $contact->user_id;
+        return $user->id == $contact->user_id;
     }
 
     /**
