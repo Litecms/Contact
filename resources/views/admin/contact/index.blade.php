@@ -6,7 +6,7 @@
             <i class="fa fa-file-text-o"></i> {!! trans('contact::contact.name') !!} <small> {!! trans('app.manage') !!} {!! trans('contact::contact.names') !!}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{!! trans_url('admin') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
+            <li><a href="{!! guard_url('/') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
             <li class="active">{!! trans('contact::contact.names') !!}</li>
         </ol>
     </section>
@@ -45,12 +45,12 @@
 
 var oTable;
 $(document).ready(function(){
-    app.load('#contact-contact-entry', '{!!trans_url('admin/contact/contact/0')!!}');
+    app.load('#contact-contact-entry', '{!!guard_url('contact/contact/0')!!}');
     oTable = $('#contact-contact-list').dataTable( {
         "bProcessing": true,
         "sDom": 'R<>rt<ilp><"clear">',
         "bServerSide": true,
-        "sAjaxSource": '{!! trans_url('/admin/contact/contact') !!}',
+        "sAjaxSource": '{!! guard_url('contact/contact') !!}',
         "fnServerData" : function ( sSource, aoData, fnCallback ) {
 
             $('#contact-contact-list .search_bar input, #contact-contact-list .search_bar select').each(
@@ -85,7 +85,7 @@ $(document).ready(function(){
 
         var d = $('#contact-contact-list').DataTable().row( this ).data();
 
-        $('#contact-contact-entry').load('{!!trans_url('admin/contact/contact')!!}' + '/' + d.id);
+        $('#contact-contact-entry').load('{!!guard_url('contact/contact')!!}' + '/' + d.id);
     });
 
     $("#contact-contact-list .search_bar input, #contact-contact-list .search_bar select").on('keyup select', function (e) {

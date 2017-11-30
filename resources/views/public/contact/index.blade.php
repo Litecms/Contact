@@ -100,7 +100,7 @@
             {!!Form::vertical_open()
             ->id('send-message')
             ->method('POST')
-            ->action(trans_url('contact/sendmail'))!!}
+            ->action(guard_url('contact/sendmail'))!!}
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">

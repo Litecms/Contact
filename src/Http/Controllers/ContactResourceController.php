@@ -3,24 +3,22 @@
 namespace Litecms\Contact\Http\Controllers;
 
 use App\Http\Controllers\ResourceController as BaseController;
-use Form;
 use Litecms\Contact\Http\Requests\ContactRequest;
 use Litecms\Contact\Interfaces\ContactRepositoryInterface;
 use Litecms\Contact\Models\Contact;
 
 /**
- * Admin web controller class.
+ * Resource controller class for contact.
  */
 class ContactResourceController extends BaseController
 {
 
-// use ContactWorkflow;
     /**
-     * Initialize contact controller.
+     * Initialize contact resource controller.
      *
      * @param type ContactRepositoryInterface $contact
      *
-     * @return type
+     * @return null
      */
     public function __construct(ContactRepositoryInterface $contact)
     {
@@ -38,6 +36,7 @@ class ContactResourceController extends BaseController
      */
     public function index(ContactRequest $request)
     {
+
         if ($this->response->typeIs('json')) {
             $pageLimit = $request->input('pageLimit');
             $data      = $this->repository
@@ -48,14 +47,15 @@ class ContactResourceController extends BaseController
                 ->output();
         }
 
+        $contacts = $this->repository->paginate();
+        
         $this->response->theme->asset()->container('footer')->add('gmap', 'https://maps.googleapis.com/maps/api/js?key=' . config('litecms.contact.gmapapi'));
 
         return $this->response->title(trans('contact::contact.names'))
-            ->view('contact::admin.contact.index')
+            ->view('contact::contact.index', true)
             ->data(compact('contacts'))
             ->output();
     }
-
 
     /**
      * Display contact.
@@ -69,17 +69,16 @@ class ContactResourceController extends BaseController
     {
 
         if ($contact->exists) {
-            $view = 'contact::admin.contact.show';
+            $view = 'contact::contact.show';
         } else {
-            $view = 'contact::admin.contact.new';
+            $view = 'contact::contact.new';
         }
 
         return $this->response->title(trans('app.view') . ' ' . trans('contact::contact.name'))
             ->data(compact('contact'))
-            ->view($view)
+            ->view($view, true)
             ->output();
     }
-
 
     /**
      * Show the form for creating a new contact.
@@ -92,11 +91,10 @@ class ContactResourceController extends BaseController
     {
 
         $contact = $this->repository->newInstance([]);
-
-        Form::populate($contact);
-
-        return response()->view('contact::admin.contact.create', compact('contact'));
-
+        return $this->response->title(trans('app.new') . ' ' . trans('contact::contact.name')) 
+            ->view('contact::contact.create', true) 
+            ->data(compact('contact'))
+            ->output();
     }
 
     /**
@@ -109,21 +107,22 @@ class ContactResourceController extends BaseController
     public function store(ContactRequest $request)
     {
         try {
-            $attributes            = $request->all();
-            $attributes['user_id'] = user_id('admin.web');
-            $contact               = $this->repository->create($attributes);
+            $attributes              = $request->all();
+            $attributes['user_id']   = user_id();
+            $attributes['user_type'] = user_type();
+            $contact                 = $this->repository->create($attributes);
 
-            return response()->json([
-                'message'  => trans('messages.success.updated', ['Module' => trans('contact::contact.name')]),
-                'code'     => 204,
-                'redirect' => trans_url('/admin/contact/contact/' . $contact->getRouteKey()),
-            ], 201);
-
+            return $this->response->message(trans('messages.success.created', ['Module' => trans('contact::contact.name')]))
+                ->code(204)
+                ->status('success')
+                ->url(guard_url('contact/contact/' . $contact->getRouteKey()))
+                ->redirect();
         } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => 400,
-            ], 400);
+            return $this->response->message($e->getMessage())
+                ->code(400)
+                ->status('error')
+                ->url(guard_url('contact/contact'))
+                ->redirect();
         }
 
     }
@@ -138,8 +137,10 @@ class ContactResourceController extends BaseController
      */
     public function edit(ContactRequest $request, Contact $contact)
     {
-        Form::populate($contact);
-        return response()->view('contact::admin.contact.edit', compact('contact'));
+        return $this->response->title(trans('app.edit') . ' ' . trans('contact::contact.name'))
+            ->view('contact::contact.edit', true)
+            ->data(compact('contact'))
+            ->output();
     }
 
     /**
@@ -153,25 +154,20 @@ class ContactResourceController extends BaseController
     public function update(ContactRequest $request, Contact $contact)
     {
         try {
-
             $attributes = $request->all();
 
             $contact->update($attributes);
-
-            return response()->json([
-                'message'  => trans('messages.success.updated', ['Module' => trans('contact::contact.name')]),
-                'code'     => 204,
-                'redirect' => trans_url('/admin/contact/contact/' . $contact->getRouteKey()),
-            ], 201);
-
+            return $this->response->message(trans('messages.success.updated', ['Module' => trans('contact::contact.name')]))
+                ->code(204)
+                ->status('success')
+                ->url(guard_url('contact/contact/' . $contact->getRouteKey()))
+                ->redirect();
         } catch (Exception $e) {
-
-            return response()->json([
-                'message'  => $e->getMessage(),
-                'code'     => 400,
-                'redirect' => trans_url('/admin/contact/contact/' . $contact->getRouteKey()),
-            ], 400);
-
+            return $this->response->message($e->getMessage())
+                ->code(400)
+                ->status('error')
+                ->url(guard_url('contact/contact/' . $contact->getRouteKey()))
+                ->redirect();
         }
 
     }
@@ -185,26 +181,25 @@ class ContactResourceController extends BaseController
      */
     public function destroy(ContactRequest $request, Contact $contact)
     {
-
         try {
 
-            $t = $contact->delete();
-
-            return response()->json([
-                'message'  => trans('messages.success.deleted', ['Module' => trans('contact::contact.name')]),
-                'code'     => 202,
-                'redirect' => trans_url('/admin/contact/contact/0'),
-            ], 202);
+            $contact->delete();
+            return $this->response->message(trans('messages.success.deleted', ['Module' => trans('contact::contact.name')]))
+                ->code(202)
+                ->status('success')
+                ->url(guard_url('contact/contact'))
+                ->redirect();
 
         } catch (Exception $e) {
 
-            return response()->json([
-                'message'  => $e->getMessage(),
-                'code'     => 400,
-                'redirect' => trans_url('/admin/contact/contact/' . $contact->getRouteKey()),
-            ], 400);
+            return $this->response->message($e->getMessage())
+                ->code(400)
+                ->status('error')
+                ->url(guard_url('contact/contact/' . $contact->getRouteKey()))
+                ->redirect();
         }
 
     }
 
 }
+

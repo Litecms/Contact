@@ -49,14 +49,6 @@ class ContactPolicy
         if ($user->canDo('contact.contact.update') && $user->isAdmin()) {
             return true;
         }
-
-        if ($user->canDo('blocks.block.update') 
-        && $user->is('manager')
-        && $block->user->parent_id == $user->id) {
-            return true;
-        }
-
-        return $user->id == $contact->user_id;
     }
 
     /**
@@ -72,48 +64,6 @@ class ContactPolicy
         if ($user->canDo('contact.contact.delete') && $user->isAdmin()) {
             return true;
         }
-
-        if ($user->canDo('blocks.block.delete') 
-        && $user->is('manager')
-        && $block->user->parent_id == $user->id) {
-            return true;
-        }
-
-        return $user->id == $contact->user_id;
-    }
-
-    /**
-     * Determine if the given user can verify the given contact.
-     *
-     * @param User $user
-     * @param Contact $contact
-     *
-     * @return bool
-     */
-    public function verify(User $user, Contact $contact)
-    {
-        if ($user->canDo('contact.contact.verify') && $user->isAdmin()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine if the given user can approve the given contact.
-     *
-     * @param User $user
-     * @param Contact $contact
-     *
-     * @return bool
-     */
-    public function approve(User $user, Contact $contact)
-    {
-        if ($user->canDo('contact.contact.approve') && $user->isAdmin()) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
