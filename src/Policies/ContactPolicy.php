@@ -18,17 +18,9 @@ class ContactPolicy
      */
     public function view(User $user, Contact $contact)
     {
-        if ($user->canDo('contact.contact.view') && $user->is('admin')) {
+        if ($user->canDo('contact.contact.view') && $user->isAdmin()) {
             return true;
         }
-
-        if ($user->canDo('blocks.block.view') 
-        && $user->is('manager')
-        && $block->user->parent_id == $user->id) {
-            return true;
-        }
-
-        return $user->id === $contact->user_id;
     }
 
     /**
@@ -54,7 +46,7 @@ class ContactPolicy
      */
     public function update(User $user, Contact $contact)
     {
-        if ($user->canDo('contact.contact.update') && $user->is('admin')) {
+        if ($user->canDo('contact.contact.update') && $user->isAdmin()) {
             return true;
         }
 
@@ -77,7 +69,7 @@ class ContactPolicy
      */
     public function destroy(User $user, Contact $contact)
     {
-        if ($user->canDo('contact.contact.delete') && $user->is('admin')) {
+        if ($user->canDo('contact.contact.delete') && $user->isAdmin()) {
             return true;
         }
 
@@ -100,13 +92,7 @@ class ContactPolicy
      */
     public function verify(User $user, Contact $contact)
     {
-        if ($user->canDo('contact.contact.verify') && $user->is('admin')) {
-            return true;
-        }
-
-        if ($user->canDo('contact.contact.verify') 
-        && $user->is('manager')
-        && $contact->user->parent_id == $user->id) {
+        if ($user->canDo('contact.contact.verify') && $user->isAdmin()) {
             return true;
         }
 
@@ -123,7 +109,7 @@ class ContactPolicy
      */
     public function approve(User $user, Contact $contact)
     {
-        if ($user->canDo('contact.contact.approve') && $user->is('admin')) {
+        if ($user->canDo('contact.contact.approve') && $user->isAdmin()) {
             return true;
         }
 
@@ -140,7 +126,7 @@ class ContactPolicy
      */
     public function before($user, $ability)
     {
-        if ($user->isSuperUser()) {
+        if ($user->isSuperuser()) {
             return true;
         }
     }
