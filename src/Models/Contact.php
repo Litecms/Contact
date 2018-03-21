@@ -8,13 +8,13 @@ use Litepie\Database\Traits\Slugger;
 use Litepie\Filer\Traits\Filer;
 use Litepie\Hashids\Traits\Hashids;
 use Litepie\Repository\Traits\PresentableTrait;
-use Litepie\Revision\Traits\Revision;
+use Litepie\Activities\Traits\LogsActivity;
 use Litepie\Trans\Traits\Translatable;
 // use Litecms\Workflow\Model\Workflow;
 
 class Contact extends Model
 {
-    use Filer, SoftDeletes, Hashids, Slugger, Translatable, Revision, PresentableTrait;
+    use Filer, SoftDeletes, Hashids, Slugger, Translatable, LogsActivity, PresentableTrait;
     // use Workflow;
 
     /**

@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="icon">
-                            <i class="ion-ios-navigate-outline">
+                            <i class="ti-location-pin">
                             </i>
                         </div>
                         <div class="content">
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="icon">
-                            <i class="ion-ios-call-outline">
+                            <i class="ti-mobile">
                             </i>
                         </div>
                         <div class="content">
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                         <div class="icon">
-                            <i class="ion-ios-mail-outline">
+                            <i class="ti-email">
                             </i>
                         </div>
                         <div class="content">

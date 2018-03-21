@@ -41,6 +41,8 @@ class ContactServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'litecms.contact');
+
         // Bind facade
         $this->app->bind('contact', function ($app) {
             return $this->app->make('Litecms\Contact\Contact');
