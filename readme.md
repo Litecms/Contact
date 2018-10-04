@@ -39,6 +39,20 @@ Views
 
 Publish admin views only if it is necessary.
 
+**Publishing views to theme**
+
+Publishes admin view
+    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="admin" --theme=="admin"
+
+Publishes client view
+    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="default" --theme=="client"
+
+Publishes user view
+    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="default" --theme=="user"
+
+Publishes public view
+    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="public" --theme=="public"
+    
 ## Usage
 
 
