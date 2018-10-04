@@ -26,7 +26,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Litecms\\Contact\\Providers\\ContactServiceProvider"
+                "Litecms\\Contact\\ContactServiceProvider"
             ],
             "aliases": {
                 "Contact"       : "Litecms\\Contact\\Facades",
