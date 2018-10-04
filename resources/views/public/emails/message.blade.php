@@ -2,5 +2,5 @@
 Name: {!!@$data['name']!!}<br />
 Email Id: {!!@$data['email']!!}<br />
 Phone: {!!@$data['phone']!!}<br />
-Message: {!!@$data['message']!!}<br />
+Message: {!!@$data['messages']!!}<br />
 </span>

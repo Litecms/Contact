@@ -33,6 +33,7 @@ class ContactPublicController extends BaseController
      */
     protected function index()
     {
+
         $this->response->theme->asset()->container('footer')->add('gmap', 'https://maps.googleapis.com/maps/api/js?key=' . config('litecms.contact.gmapapi'));
 
         $contact = $this->repository
@@ -56,18 +57,17 @@ class ContactPublicController extends BaseController
      */
     public function sendMail(Request $request)
     {
+        
         $data = $request->all();
-        Mail::send('contact::public.emails.message', compact('data'), function ($message) use ($data) {
-            $message->setReplyTo($data['email'], $data['name']);
-            $message->to(config('litecms.contact.mail_to_email'), config('litecms.contact.mail_to_name'));
-            $message->subject(config('litecms.contact.mail_subject'));
-        });
-
-        return response()->json([
-            'type'    => 'Success',
-            'message' => 'Your message has been send successfully.',
-            'code'    => 201,
-        ], 201);
+       Mail::send('contact::public.emails.message', ['data' => $data], function ($message) use ($data) {
+           $message->from($data['email']);
+           $message->to('swathy@renfos.com')->subject('Contact Enquiry');
+       });
+           return $this->response->message('Success! Your message send successfully.')
+               ->code(204)
+               ->status('success')
+               ->url(url('/contacts'))
+               ->redirect();
 
     }
 
