@@ -2,57 +2,33 @@ This is a Laravel 5 package that provides contact management facility for lavali
 
 ## Installation
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `litecms/contact`.
+Begin by installing this package through Composer
 
-    "litecms/contact": "dev-master"
+    composer install litecms/contact
 
-Next, update Composer from the Terminal:
-
-    composer update
-
-Once this operation completes execute below cammnds in command line to finalize installation.
-
-```php
-Litecms\Contact\Providers\ContactServiceProvider::class,
-
-```
-
-And also add it to alias
-
-```php
-'Contact'  => Litecms\Contact\Facades\Contact::class,
-```
-
-Use the below commands for publishing
+## Publishing
 
 Configuration
 
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="config"
+    php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="config"
 
 Language
 
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="lang"
+    php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="lang"
 
-Views 
+### Publishing views 
 
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="view"
+Publish to resources\vendor directory
 
-Publish admin views only if it is necessary.
+    php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="view"
 
-**Publishing views to theme**
 
-Publishes admin view
-    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="admin" --theme=="admin"
+Publishes admin view to admin theme
 
-Publishes client view
-    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="default" --theme=="client"
+    php artisan theme:publish --provider="Litecms\Contact\ContactServiceProvider" --view="admin" --theme="admin"
 
-Publishes user view
-    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="default" --theme=="user"
+Publishes public view to public theme
 
-Publishes public view
-    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="public" --theme=="public"
+    php artisan theme:publish --provider="Litecms\Contact\ContactServiceProvider" --view="public" --theme="public"
     
-## Usage
-
 
