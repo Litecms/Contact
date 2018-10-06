@@ -1,27 +1,33 @@
-This is a Laravel 5 package that provides contact management facility for lavalite framework.
+Laravel package that provides contact management facility for lavalite CMS.
 
 ## Installation
 
-Begin by installing this package through Composer
+Require this package with composer. 
 
-    composer install litecms/contact
+    composer require litecms/contact
+
+Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
+
 
 ## Publishing
 
-Configuration
+**Configuration**
 
     php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="config"
 
-Language
+**Language**
 
     php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="lang"
 
-### Publishing views 
+**Files**
 
-Publish to resources\vendor directory
+    php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="storage"
+
+### Views
+
+Publish views to resources\views\vendor directory
 
     php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="view"
-
 
 Publishes admin view to admin theme
 
@@ -30,5 +36,3 @@ Publishes admin view to admin theme
 Publishes public view to public theme
 
     php artisan theme:publish --provider="Litecms\Contact\ContactServiceProvider" --view="public" --theme="public"
-    
-
