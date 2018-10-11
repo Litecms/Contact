@@ -42,8 +42,9 @@ class ContactPublicController extends BaseController
                 return $query->orderBy('id', 'DESC');
             })->first();
 
-        return $this->response->title(trans('contact::contact.names'))
+        return $this->response->setMetaTitle(trans('contact::contact.names'))
             ->view('contact::public.contact.index')
+            ->populate(false)
             ->data(compact('contact'))
             ->output();
     }

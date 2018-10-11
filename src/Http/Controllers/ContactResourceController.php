@@ -51,7 +51,7 @@ class ContactResourceController extends BaseController
         
         $this->response->theme->asset()->container('footer')->add('gmap', 'https://maps.googleapis.com/maps/api/js?key=' . config('litecms.contact.gmapapi'));
 
-        return $this->response->title(trans('contact::contact.names'))
+        return $this->response->setMetaTitle(trans('contact::contact.names'))
             ->view('contact::contact.index', true)
             ->data(compact('contacts'))
             ->output();
@@ -74,9 +74,9 @@ class ContactResourceController extends BaseController
             $view = 'contact::contact.new';
         }
 
-        return $this->response->title(trans('app.view') . ' ' . trans('contact::contact.name'))
+        return $this->response->setMetaTitle(trans('app.view') . ' ' . trans('contact::contact.name'))
             ->data(compact('contact'))
-            ->view($view, true)
+            ->view($view)
             ->output();
     }
 
@@ -91,7 +91,7 @@ class ContactResourceController extends BaseController
     {
 
         $contact = $this->repository->newInstance([]);
-        return $this->response->title(trans('app.new') . ' ' . trans('contact::contact.name')) 
+        return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('contact::contact.name')) 
             ->view('contact::contact.create', true) 
             ->data(compact('contact'))
             ->output();
@@ -137,7 +137,7 @@ class ContactResourceController extends BaseController
      */
     public function edit(ContactRequest $request, Contact $contact)
     {
-        return $this->response->title(trans('app.edit') . ' ' . trans('contact::contact.name'))
+        return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('contact::contact.name'))
             ->view('contact::contact.edit', true)
             ->data(compact('contact'))
             ->output();
