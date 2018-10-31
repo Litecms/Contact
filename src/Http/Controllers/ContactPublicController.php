@@ -44,6 +44,7 @@ class ContactPublicController extends BaseController
 
         return $this->response->setMetaTitle(trans('contact::contact.names'))
             ->view('contact::contact.index')
+            ->populate(false)
             ->data(compact('contact'))
             ->output();
     }

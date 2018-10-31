@@ -1,58 +1,38 @@
-This is a Laravel 5 package that provides contact management facility for lavalite framework.
+Laravel package that provides contact management facility for lavalite CMS.
 
 ## Installation
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `litecms/contact`.
+Require this package with composer. 
 
-    "litecms/contact": "dev-master"
+    composer require litecms/contact
 
-Next, update Composer from the Terminal:
-
-    composer update
-
-Once this operation completes execute below cammnds in command line to finalize installation.
-
-```php
-Litecms\Contact\Providers\ContactServiceProvider::class,
-
-```
-
-And also add it to alias
-
-```php
-'Contact'  => Litecms\Contact\Facades\Contact::class,
-```
-
-Use the below commands for publishing
-
-Configuration
-
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="config"
-
-Language
-
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="lang"
-
-Views 
-
-    php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="view"
-
-Publish admin views only if it is necessary.
-
-**Publishing views to theme**
-
-Publishes admin view
-    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="admin" --theme=="admin"
-
-Publishes client view
-    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="default" --theme=="client"
-
-Publishes user view
-    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="default" --theme=="user"
-
-Publishes public view
-    php artisan theme:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --view=="public" --theme=="public"
-    
-## Usage
+Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
 
 
+## Publishing
+
+**Configuration**
+
+    php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="config"
+
+**Language**
+
+    php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="lang"
+
+**Files**
+
+    php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="storage"
+
+### Views
+
+Publish views to resources\views\vendor directory
+
+    php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="view"
+
+Publishes admin view to admin theme
+
+    php artisan theme:publish --provider="Litecms\Contact\ContactServiceProvider" --view="admin" --theme="admin"
+
+Publishes public view to public theme
+
+    php artisan theme:publish --provider="Litecms\Contact\ContactServiceProvider" --view="public" --theme="public"

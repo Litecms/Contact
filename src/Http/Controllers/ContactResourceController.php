@@ -76,7 +76,7 @@ class ContactResourceController extends BaseController
 
         return $this->response->setMetaTitle(trans('app.view') . ' ' . trans('contact::contact.name'))
             ->data(compact('contact'))
-            ->view($view, true)
+            ->view($view)
             ->output();
     }
 

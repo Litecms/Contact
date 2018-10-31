@@ -29,7 +29,7 @@
                 "Litecms\\Contact\\ContactServiceProvider"
             ],
             "aliases": {
-                "Contact" : "Litecms\\Contact\\Facades"
+                "Contact" : "Litecms\\Contact\\Facades\\Contact"
             }
         }
     },
