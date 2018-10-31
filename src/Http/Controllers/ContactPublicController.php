@@ -43,7 +43,7 @@ class ContactPublicController extends BaseController
             })->first();
 
         return $this->response->setMetaTitle(trans('contact::contact.names'))
-            ->view('contact::public.contact.index')
+            ->view('contact::contact.index')
             ->populate(false)
             ->data(compact('contact'))
             ->output();
@@ -60,7 +60,7 @@ class ContactPublicController extends BaseController
     {
         
         $data = $request->all();
-       Mail::send('contact::public.emails.message', ['data' => $data], function ($message) use ($data) {
+       Mail::send('contact::emails.message', ['data' => $data], function ($message) use ($data) {
            $message->from($data['email']);
            $message->to('swathy@renfos.com')->subject('Contact Enquiry');
        });
