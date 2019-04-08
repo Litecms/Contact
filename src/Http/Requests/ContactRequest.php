@@ -3,6 +3,7 @@
 namespace Litecms\Contact\Http\Requests;
 
 use App\Http\Requests\Request as FormRequest;
+use Litecms\Contact\Models\Contact;
 
 class ContactRequest extends FormRequest
 {
@@ -17,7 +18,7 @@ class ContactRequest extends FormRequest
 
         if (is_null($this->model)) {
             // Determine if the user is authorized to access contact module,
-            return $this->formRequest->user($this->guard)->canDo('contact.contact.view');
+            return $this->formRequest->user()->can('view', Contact::class);
         }
 
         if ($this->isWorkflow()) {

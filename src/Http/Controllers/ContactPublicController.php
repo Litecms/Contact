@@ -43,7 +43,7 @@ class ContactPublicController extends BaseController
             })->first();
 
         return $this->response->setMetaTitle(trans('contact::contact.names'))
-            ->view('contact::contact.index')
+            ->view('contact::index')
             ->populate(false)
             ->data(compact('contact'))
             ->output();
