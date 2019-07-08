@@ -1,4 +1,4 @@
-@include('contact::public.contact.header')
+@include('contact::header')
 <section class="contact">
     <div class="container">
         <div class="row">
