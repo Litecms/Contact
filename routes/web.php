@@ -6,6 +6,7 @@ Route::group(['prefix' => '{guard}/contact'], function () {
 });
 
 Route::get('contact.htm', 'ContactPublicController@index');
+Route::get('contact/{slug?}', 'ContactPublicController@show');
 Route::post('contact/sendmail', 'ContactPublicController@sendMail');
 
 if (Trans::isMultilingual()) {

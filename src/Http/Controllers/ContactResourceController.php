@@ -2,7 +2,7 @@
 
 namespace Litecms\Contact\Http\Controllers;
 
-use App\Http\Controllers\ResourceController as BaseController;
+use Litepie\Http\Controllers\ResourceController;
 use Litecms\Contact\Http\Requests\ContactRequest;
 use Litecms\Contact\Interfaces\ContactRepositoryInterface;
 use Litecms\Contact\Models\Contact;
@@ -10,7 +10,7 @@ use Litecms\Contact\Models\Contact;
 /**
  * Resource controller class for contact.
  */
-class ContactResourceController extends BaseController
+class ContactResourceController extends ResourceController
 {
 
     /**
@@ -36,25 +36,21 @@ class ContactResourceController extends BaseController
      */
     public function index(ContactRequest $request)
     {
-
-        if ($this->response->typeIs('json')) {
-            $pageLimit = $request->input('pageLimit');
-            $data      = $this->repository
-                ->setPresenter(\Litecms\Contact\Repositories\Presenter\ContactListPresenter::class)
-                ->getDataTable($pageLimit);
-            return $this->response
-                ->data($data)
-                ->output();
+        $pageLimit = $request->input('pageLimit', 10);
+        $data = $this->repository
+            ->setPresenter(\Litecms\Contact\Repositories\Presenter\ContactListPresenter::class)
+            ->paginate($pageLimit);
+        extract($data);
+        $view = 'contact::contact.index';
+        if ($request->ajax()) {
+            $view = 'contact::contact.more';
         }
-
-        $contacts = $this->repository->paginate();
-        
-        $this->response->theme->asset()->container('footer')->add('gmap', 'https://maps.googleapis.com/maps/api/js?key=' . config('litecms.contact.gmapapi'));
-
+        $this->response->theme->asset()->container('footer')->add('gmap', 'https://maps.googleapis.com/maps/api/js?key='.config('litecms.contact.gmapapi'));
         return $this->response->setMetaTitle(trans('contact::contact.names'))
-            ->view('contact::contact.index', true)
-            ->data(compact('contacts'))
+            ->view($view)
+            ->data(compact('data', 'meta'))
             ->output();
+        
     }
 
     /**
@@ -187,7 +183,7 @@ class ContactResourceController extends BaseController
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('contact::contact.name')]))
                 ->code(202)
                 ->status('success')
-                ->url(guard_url('contact/contact'))
+                ->url(guard_url('contact/contact/'. $contact->getRouteKey()))
                 ->redirect();
 
         } catch (Exception $e) {

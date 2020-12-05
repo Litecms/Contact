@@ -58,7 +58,7 @@ return [
         'slugs'             => ['slug' => 'name'],
         'dates'             => ['deleted_at'],
         'appends'           => [],
-        'fillable'          => ['user_id', 'name', 'phone',  'mobile',  'email',  'default',  'website',  'details',  'address',  'street',  'city',  'state',  'country',  'zip',  'lat',  'lng',  'status'],
+        'fillable'          => ['user_id', 'name', 'phone',  'mobile',  'email',  'default',  'website',  'details',  'address',  'street',  'city',  'state',  'country',  'zip',  'lat',  'lng',  'status','slug'],
         'translate'         => [],
         'upload_folder'     => 'contact/contact',
         'uploads'           => [],

@@ -1,11 +1,8 @@
 <?php
 
-namespace Litecms;
-
-use DB;
 use Illuminate\Database\Seeder;
 
-class ContactTableSeeder extends Seeder
+class LitecmsContactTableSeeder extends Seeder
 {
     public function run()
     {
@@ -61,7 +58,7 @@ India, Pin - 682017',
                 'url'         => 'admin/contact/contact',
                 'name'        => 'Contact',
                 'description' => null,
-                'icon'        => 'fa fa-newspaper-o',
+                'icon'        => 'las fa-address-book',
                 'target'      => null,
                 'order'       => 190,
                 'status'      => 1,
@@ -91,8 +88,6 @@ India, Pin - 682017',
 
         ]);
 
-        DB::table('settings')->insert([
-
-        ]);
+        DB::table('settings')->insert([]);
     }
 }

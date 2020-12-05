@@ -26,7 +26,7 @@ class ContactListTransformer extends TransformerAbstract
             'zip'               => $contact->zip,
             'lat'               => $contact->lat,
             'lng'               => $contact->lng,
-            'status'            => trans('app.'.$contact->status),
+            'status'            => trans($contact->status),
             'created_at'        => format_date($contact->created_at),
             'updated_at'        => format_date($contact->updated_at),
         ];

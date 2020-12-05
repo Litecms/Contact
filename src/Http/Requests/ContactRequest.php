@@ -2,10 +2,10 @@
 
 namespace Litecms\Contact\Http\Requests;
 
-use App\Http\Requests\Request as FormRequest;
+use Litepie\Http\Request\AbstractRequest;
 use Litecms\Contact\Models\Contact;
 
-class ContactRequest extends FormRequest
+class ContactRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +18,7 @@ class ContactRequest extends FormRequest
 
         if (is_null($this->model)) {
             // Determine if the user is authorized to access contact module,
-            return $this->formRequest->user()->can('view', Contact::class);
+            return $this->formRequest->user()->can('view',app(Contact::class) );
         }
 
         if ($this->isWorkflow()) {
@@ -56,14 +56,18 @@ class ContactRequest extends FormRequest
         if ($this->isStore()) {
             // validation rule for create request.
             return [
-
+                'email' => 'required|email',
+                'phone' => 'numeric',
+                'mobile' => 'numeric',
             ];
         }
 
         if ($this->isUpdate()) {
             // Validation rule for update request.
             return [
-
+                'email' => 'required|email',
+                'phone' => 'numeric',
+                'mobile' => 'numeric',
             ];
         }
 
