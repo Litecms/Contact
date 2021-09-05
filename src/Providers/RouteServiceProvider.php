@@ -5,6 +5,7 @@ namespace Litecms\Contact\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use Litecms\Contact\Models\Contact;
+
 use Request;
 use Route;
 
@@ -29,10 +30,11 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        
         if (Request::is('*/contact/contact/*')) {
             Route::bind('contact', function ($contact) {
-                $contactrepo = $this->app->make('Litecms\Contact\Interfaces\ContactRepositoryInterface');
-                return $contactrepo->findorNew($contact);
+                $contactRepo = $this->app->make('Litecms\Contact\Interfaces\ContactRepositoryInterface');
+                return $contactRepo->findorNew($contact);
             });
         }
 
@@ -46,6 +48,8 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapWebRoutes();
+
+        $this->mapApiRoutes();
     }
 
     /**
@@ -56,13 +60,30 @@ class RouteServiceProvider extends ServiceProvider
      * @return void
      */
     protected function mapWebRoutes()
-    {
+    {   
         Route::group([
             'middleware' => 'web',
-            'namespace' => $this->namespace,
-            'prefix' => trans_setlocale(),
+            'namespace'  => $this->namespace,
         ], function ($router) {
             require (__DIR__ . '/../../routes/web.php');
+        });
+    }
+
+    /**
+     * Define the "api" routes for the package.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapApiRoutes()
+    {
+        Route::group([
+            'middleware' => 'api',
+            'namespace'  => $this->namespace,
+            'prefix'     => 'api',
+        ], function ($router) {
+            require (__DIR__ . '/../../routes/api.php');
         });
     }
 

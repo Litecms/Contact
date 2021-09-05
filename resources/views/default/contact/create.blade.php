@@ -1,17 +1,27 @@
 <div class="app-entry-form-wrap">
     <div class="app-sec-title app-sec-title-with-icon app-sec-title-with-action">
-        <i class="lab la-product-hunt app-sec-title-icon"></i>
-        <h2>{{__('Create')}} {{ trans('contact::contact.name') }}</h2>
+        <a href="#" class="mobile-back-btn"><i class="las la-arrow-left"></i></a>
+        <i class="las la-list app-sec-title-icon"></i>
+        <h2>{!!__('Create')!!} {!! trans('contact::contact.name') !!}</h2>
         <div class="actions">
-            <button type="button" class="btn btn-with-icon btn-link app-create btn-outline" data-action='STORE'
-                data-form="#form-create" data-load-to="#app-entry" data-list="#item-list">
-                <i class="las la-save"></i>{{__('Create')}}
-            </button>
+            <div class="action-buttons">
+            <button type="button" class="btn btn-with-icon btn-link app-create btn-outline" 
+                    data-action='STORE'
+                    data-form="#form-create" 
+                    data-load-to="#app-entry" 
+                    data-list="#item-list">
+                    <i class="las la-save"></i>{!!__('Create')!!}
+                </button>
+            </div>
+            
+            <div class="app-pagination-moble">
+                <a href="#" class="prev"><i class="las la-arrow-up"></i></a>
+                <a href="#" class="next"><i class="las la-arrow-down"></i></a>
+            </div>
         </div>
     </div>
     {!!Form::vertical_open()
     ->id('form-create')
-    ->class('app-form-create')
     ->method('POST')
     ->files('true')
     ->action(guard_url('contact/contact'))!!}
@@ -19,5 +29,5 @@
     @include('contact::contact.partial.entry', ['mode' => 'create'])
 
     {!! Form::close() !!}
-
 </div>
+

@@ -41,7 +41,7 @@ class ContactServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'litecms.contact');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'litecms.contact');
 
         // Bind facade
         $this->app->bind('contact', function ($app) {
@@ -49,14 +49,25 @@ class ContactServiceProvider extends ServiceProvider
         });
 
         // Bind Contact to repository
-        $this->app->bind(
-            'Litecms\Contact\Interfaces\ContactRepositoryInterface',
-            \Litecms\Contact\Repositories\Eloquent\ContactRepository::class
-        );
+        $this->registerBindings();
 
         $this->app->register(\Litecms\Contact\Providers\AuthServiceProvider::class);
         $this->app->register(\Litecms\Contact\Providers\EventServiceProvider::class);
         $this->app->register(\Litecms\Contact\Providers\RouteServiceProvider::class);
+    }
+
+    /**
+     * Register the bindings for the service provider.
+     *
+     * @return void
+     */
+    public function registerBindings()
+    {
+        // Bind Contact to repository
+        $this->app->bind(
+            'Litecms\Contact\Interfaces\ContactRepositoryInterface',
+            \Litecms\Contact\Repositories\Eloquent\ContactRepository::class
+        );
     }
 
     /**
@@ -87,5 +98,5 @@ class ContactServiceProvider extends ServiceProvider
 
         // Publish public
         $this->publishes([__DIR__ . '/../public' => public_path('/')], 'public');
-   }
+    }
 }
