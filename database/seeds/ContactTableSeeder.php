@@ -1,8 +1,10 @@
 <?php
 
+namespace Litecms\Contact\Seeds;
+
 use Illuminate\Database\Seeder;
 
-class LitecmsContactTableSeeder extends Seeder
+class ContactTableSeeder extends Seeder
 {
     public function run()
     {
@@ -13,7 +15,7 @@ class LitecmsContactTableSeeder extends Seeder
                 'phone'   => '+91 484-4011 609',
                 'mobile'  => '+91 97444 89361',
                 'email'   => 'india@lavalite.org',
-                'website' => 'http://lavalite.org',
+                'website' => 'https://lavalite.org',
                 'details' => 'INFOPARK TBC
 JNI Stadium Complex, Kaloor
 Kochi, Kerala,

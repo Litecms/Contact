@@ -11,6 +11,11 @@ Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add 
 
 ## Publishing
 
+**Migration and seeds**
+
+    php artisan migrate
+    php artisan db:seed --class=Litecms\\Contact\\Seeds\\ContactTableSeeder
+
 **Configuration**
 
     php artisan vendor:publish --provider="Litecms\Contact\ContactServiceProvider" --tag="config"
