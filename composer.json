@@ -15,15 +15,13 @@
     }
   ],
   "require": {
-    "php": "^7.2.5|^8.0",
+    "php": "^7.3|^8.0",
     "composer/installers": "~1.9"
   },
   "autoload": {
-    "classmap": [
-      "database/seeds"
-    ],
     "psr-4": {
-      "Litecms\\Contact\\": "/src"
+      "Litecms\\Contact\\": "src",
+      "Litecms\\Contact\\Seeds": "database/seeds"
     }
   },
   "extra": {
