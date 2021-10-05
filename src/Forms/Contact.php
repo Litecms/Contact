@@ -342,12 +342,7 @@ class Contact extends FormInterpreter
                 "type" => 'text',
                 "label" => trans('contact::contact.label.lat'),
                 "placeholder" => trans('contact::contact.placeholder.lat'),
-                'coordinates' => function($field){
-                    $field->latitude = $field->getValue('lat');
-                    $field->longitude = $field->getValue('lng');
-                    $field->latField = 'lat';
-                    $field->lngField = 'lng';
-                },
+                'coordinates' => true,
                 "rules" => '',
                 "group" => "main",
                 "section" => "first",
