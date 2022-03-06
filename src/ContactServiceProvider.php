@@ -24,7 +24,7 @@ class ContactServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'contact');
 
         // Load translation
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'contact');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'contact');
 
         // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
