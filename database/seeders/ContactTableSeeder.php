@@ -1,6 +1,6 @@
 <?php
 
-namespace Litecms\Contact\Seeds;
+namespace Litecms\Contact\Seeders;
 
 use DB;
 use Illuminate\Database\Seeder;
@@ -64,7 +64,7 @@ India, Pin - 682017',
                 'icon'        => 'las la-address-card',
                 'target'      => null,
                 'order'       => 190,
-                'status'      => 1,
+                'status'      => 'Show',
             ],
             [
                 'parent_id'   => 4,
@@ -75,7 +75,7 @@ India, Pin - 682017',
                 'icon'        => null,
                 'target'      => null,
                 'order'       => 190,
-                'status'      => 1,
+                'status'      => 'Show',
             ],
             [
                 'parent_id'   => 5,
@@ -86,7 +86,7 @@ India, Pin - 682017',
                 'icon'        => null,
                 'target'      => null,
                 'order'       => 190,
-                'status'      => 1,
+                'status'      => 'Show',
             ],
 
         ]);

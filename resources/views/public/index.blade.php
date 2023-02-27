@@ -21,19 +21,19 @@
                         <div class="col-12 col-sm-6 col-md-6">
                             <div class="contact-widget-block">
                                 <h3 class="title">Call us</h3>
-                                <p>{{$contact['phone']}}</p>
+                                <p>{{@$contact['phone']}}</p>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6">
                             <div class="contact-widget-block">
                                 <h3 class="title">Email us</h3>
-                                <p>{{$contact['email']}}</p>
+                                <p>{{@$contact['email']}}</p>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-12">
                             <div class="contact-widget-block">
                                 <h3 class="title">Address</h3>
-                                <p>{{$contact['details']}}</p>
+                                <p>{{@$contact['details']}}</p>
 
                             </div>
                         </div>
