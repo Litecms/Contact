@@ -21,7 +21,7 @@
   "autoload": {
     "psr-4": {
       "Litecms\\Contact\\": "src",
-      "Litecms\\Contact\\Seeds\\": "database/seeds"
+      "Litecms\\Contact\\Seeders\\": "database/seeders"
     }
   },
   "extra": {
