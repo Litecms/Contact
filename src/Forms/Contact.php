@@ -52,6 +52,11 @@ class Contact extends FormInterpreter
                 "roles" => [],
             ]
         ];
+        self::$orderBy = [
+            'created_at' => trans('blog::blog.label.created_at'),
+            'name' => trans('blog::blog.label.title'),
+            'status' => trans('blog::blog.label.status'),
+        ];
         self::$groups = [
             'main' => trans('contact::contact.groups.main'),
             'details' => trans('contact::contact.groups.details'),
@@ -337,12 +342,7 @@ class Contact extends FormInterpreter
                 "type" => 'text',
                 "label" => trans('contact::contact.label.lat'),
                 "placeholder" => trans('contact::contact.placeholder.lat'),
-                'coordinates' => function($field){
-                    $field->latitude = $field->getValue('lat');
-                    $field->longitude = $field->getValue('lng');
-                    $field->latField = 'lat';
-                    $field->lngField = 'lng';
-                },
+                'coordinates' => true,
                 "rules" => '',
                 "group" => "main",
                 "section" => "first",
