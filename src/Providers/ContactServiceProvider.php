@@ -1,6 +1,6 @@
 <?php
 
-namespace Litecms\Contact;
+namespace Litecms\Contact\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
