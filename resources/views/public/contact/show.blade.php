@@ -1,15 +1,5 @@
-<section class="page-banner">
-    <div class="container">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8">
-                <div class="banner-content">
-                    <h2 class="title">Contact Us</h2>
-                    <p>Create custom landing pages with Lavalite that converts <br class="d-none d-md-block"> more visitors than any website. </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@include('contact::public.contact.partial.header')
+
 
 
 <section class="contact-section">
@@ -21,19 +11,19 @@
                         <div class="col-12 col-sm-6 col-md-6">
                             <div class="contact-widget-block">
                                 <h3 class="title">Call us</h3>
-                                <p>{{@$contact['phone']}}</p>
+                                <p>{{@$data['phone']}}</p>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6">
                             <div class="contact-widget-block">
                                 <h3 class="title">Email us</h3>
-                                <p>{{@$contact['email']}}</p>
+                                <p>{{@$data['email']}}</p>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-12">
                             <div class="contact-widget-block">
                                 <h3 class="title">Address</h3>
-                                <p>{{@$contact['details']}}</p>
+                                <p>{!!nl2br(@$data['details'])!!}</p>
 
                             </div>
                         </div>

@@ -3,6 +3,7 @@
 namespace Litecms\Contact\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Litecms\Contact\Contacts;
 
 class ContactServiceProvider extends ServiceProvider
 {
@@ -11,7 +12,7 @@ class ContactServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = false;
+    protected $defer = true;
 
     /**
      * Bootstrap the application events.
@@ -41,16 +42,40 @@ class ContactServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', 'litecms.contact');
-
-        // Bind facade
-        $this->app->bind('contact', function ($app) {
-            return $this->app->make('Litecms\Contact\Contact');
-        });
+        $this->mergeConfig();
+        $this->registerFacade();
 
         $this->app->register(\Litecms\Contact\Providers\AuthServiceProvider::class);
-        $this->app->register(\Litecms\Contact\Providers\EventServiceProvider::class);
         $this->app->register(\Litecms\Contact\Providers\RouteServiceProvider::class);
+    }
+
+    /**
+     * Register the vault facade without the user having to add it to the app.php file.
+     *
+     * @return void
+     */
+    public function registerFacade() {
+        $this->app->bind('litecms.contact', function($app)
+        {
+            return $this->app->make(Contact::class);
+        });
+    }
+
+    /**
+     * Merges user's and contact's configs.
+     *
+     * @return void
+     */
+    protected function mergeConfig()
+    {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/config.php', 'litecms.contact'
+        );
+        
+        
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/contact.php', 'litecms.contact.contact'
+        );
     }
 
 
@@ -72,7 +97,7 @@ class ContactServiceProvider extends ServiceProvider
     private function publishResources()
     {
         // Publish configuration file
-        $this->publishes([__DIR__ . '/../../config/config.php' => config_path('litecms/contact.php')], 'config');
+        $this->publishes([__DIR__ . '/../../config/' => config_path('litecms/contact')], 'config');
 
         // Publish admin view
         $this->publishes([__DIR__ . '/../../resources/views' => base_path('resources/views/vendor/contact')], 'view');
@@ -80,7 +105,7 @@ class ContactServiceProvider extends ServiceProvider
         // Publish language files
         $this->publishes([__DIR__ . '/../../resources/lang' => base_path('resources/lang/vendor/contact')], 'lang');
 
-        // Publish public
-        $this->publishes([__DIR__ . '/../../public' => public_path('/')], 'public');
+        // Publish public files and assets.
+        $this->publishes([__DIR__ . '/public/' => public_path('/')], 'public');
     }
 }

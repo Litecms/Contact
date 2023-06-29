@@ -1,10 +1,10 @@
 <?php
 
-namespace Litecms\Contact\Repositories\Eloquent\Presenters;
+namespace Litecms\Contact\Http\Resources;
 
-use Litepie\Repository\Presenter\Presenter;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContactItemPresenter extends Presenter
+class ContactResource extends JsonResource
 {
 
     public function itemLink()
@@ -25,12 +25,13 @@ class ContactItemPresenter extends Presenter
         return 'None';
     }
 
-    public function toArray()
+    public function toArray($request)
     {
         return [
             'id' => $this->getRouteKey(),
             'title' => $this->title(),
             'name' => $this->name,
+            'owner' => $this->owner?->name,
             'phone' => $this->phone,
             'mobile' => $this->mobile,
             'email' => $this->email,
@@ -58,5 +59,38 @@ class ContactItemPresenter extends Presenter
                 'upload_url' => $this->getUploadURL(''),
             ],
         ];
+    }
+
+    /**
+     * Get additional data that should be returned with the resource array.
+     *
+     * @param   \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function with($request)
+    {
+        return [
+            'meta' => [
+                'exists' => $this->exists(),
+                'link' => $this->itemLink(),
+                'upload_url' => $this->getUploadURL(''),
+                'workflow' => $this->workflows(),
+                'actions' => $this->actions(),
+            ],
+        ];
+    }
+
+    private function workflows()
+    {
+        $arr = [];
+                return $arr;
+
+    }
+    private function actions()
+    {
+
+        $arr = [];
+        
+        return $arr;
     }
 }

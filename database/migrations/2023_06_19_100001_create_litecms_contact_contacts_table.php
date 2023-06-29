@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreateContactsTable extends Migration
+class CreateLitecmsContactContactsTable extends Migration
 {
     /*
      * Run the migrations.
@@ -14,9 +16,9 @@ class CreateContactsTable extends Migration
     {
 
         /*
-         * Table: contacts
+         * Table: litecms_contact_contacts
          */
-        Schema::create('contacts', function ($table) {
+        Schema::create('litecms_contact_contacts', function ($table) {
             $table->increments('id');
             $table->string('name', 250)->nullable();
             $table->string('phone', 50)->nullable();
@@ -33,11 +35,12 @@ class CreateContactsTable extends Migration
             $table->integer('zip')->nullable();
             $table->string('lat', 30)->nullable();
             $table->string('lng', 30)->nullable();
-            $table->enum('status', ['Show','Hide'])->nullable();
+            $table->enum('status', ['Draft', 'Active', 'Inactive'])->nullable();
             $table->string('slug', 200)->nullable();
             $table->integer('user_id')->nullable();
-            $table->string('user_type',50)->nullable();
+            $table->string('user_type', 50)->nullable();
             $table->string('upload_folder', 100)->nullable();
+            $table->text('marking', 200)->nullable();
             $table->softDeletes();
             $table->nullableTimestamps();
         });
@@ -51,6 +54,6 @@ class CreateContactsTable extends Migration
 
     public function down()
     {
-        Schema::drop('contacts');
+        Schema::drop('litecms_contact_contacts');
     }
 }
