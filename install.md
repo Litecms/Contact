@@ -1,12 +1,35 @@
-Lavalite package that provides contact management facility for the cms.
+# Installation
 
-## Installation
+The instructions below will help you to properly installand run the generated package to the lavalite project.
 
-Run the below command form the root folder of lavalite.
+## Location
+
+Extract the package contents to the folder 
+
+`/packages/litecms/contact/`
+
+## Composer
+
+Add the below entries in the `composer.json`.
+
+
+```json
+
+...
+     "repositories": {
+        ...
+
+        {
+            "type": "path",
+            "url": "packages/litecms/contact"
+        }
+
+        ...
+    },
+...
 
 ```
-    composer require "litecms/contact"
-```
+Then run `composer require litecms/contact`
 
 
 ## Migration and seeds
@@ -31,9 +54,7 @@ Run the below command form the root folder of lavalite.
     php artisan vendor:publish --provider="Litecms\Contact\Providers\ContactServiceProvider" --tag="view"
 ```
 
-
 ## URLs and APIs
-
 
 ### Web Urls
 

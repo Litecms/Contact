@@ -13,6 +13,6 @@ class Contact extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'contact';
+        return 'litecms.contact';
     }
 }

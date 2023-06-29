@@ -2,7 +2,8 @@
 
 namespace Litecms\Contact;
 
-use User;
+use Litecms\Contact\Models\Contact;
+
 
 class Contact
 {
@@ -14,9 +15,9 @@ class Contact
     /**
      * Constructor.
      */
-    public function __construct(\Litecms\Contact\Interfaces\ContactRepositoryInterface $contact)
+    public function __construct()
     {
-        $this->contact = $contact;
+        $this->contact = app(Contact::class);
     }
 
     /**
@@ -28,43 +29,20 @@ class Contact
      */
     public function count()
     {
-        return  $this->contact->count();
+        return  0;
     }
 
     /**
-     * Make gadget View
-     *
-     * @param string $view
-     *
-     * @param int $count
-     *
-     * @return View
-     */
-    public function gadget($view = 'admin.contact.gadget', $count = 10)
-    {
-
-        if (User::hasRole('user')) {
-            $this->contact->pushCriteria(new \Litecms\Litecms\Repositories\Criteria\ContactUserCriteria());
-        }
-
-        $contact = $this->contact->scopeQuery(function ($query) use ($count) {
-            return $query->orderBy('id', 'DESC')->take($count);
-        })->all();
-
-        return view('contact::' . $view, compact('contact'))->render();
-    }
-    /**
-     * Returns field of contact.
+     * Find contact by slug.
      *
      * @param array $filter
      *
      * @return int
      */
-    public function get($field)
+    public function contact($slug)
     {
-        $data=  $this->contact->scopeQuery(function($query){
-            return $query->orderBy('id','DESC');
-        })->first([$field]);
-        return $data[$field];
+        return  $this->contact
+            ->findBySlug($slug)
+            ->toArray();
     }
 }

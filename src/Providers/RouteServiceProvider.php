@@ -3,7 +3,7 @@
 namespace Litecms\Contact\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
+
 use Litecms\Contact\Models\Contact;
 
 use Request;
@@ -33,8 +33,7 @@ class RouteServiceProvider extends ServiceProvider
         
         if (Request::is('*/contact/contact/*')) {
             Route::bind('contact', function ($contact) {
-                $contactRepo = $this->app->make('Litecms\Contact\Interfaces\ContactRepositoryInterface');
-                return $contactRepo->findorNew($contact);
+                return Contact::findorNew($contact);
             });
         }
 

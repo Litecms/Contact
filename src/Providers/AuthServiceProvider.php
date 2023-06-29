@@ -14,7 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // Bind Contact policy
-        \Litecms\Contact\Repositories\Eloquent\ContactRepository::class => \Litecms\Contact\Policies\ContactPolicy::class,
+        \Litecms\Contact\Models\Contact::class 
+        => \Litecms\Contact\Policies\ContactPolicy::class,
     ];
 
     /**

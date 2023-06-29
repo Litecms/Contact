@@ -22,8 +22,9 @@ return [
      * Singlular and plural name of the module
      */
     'title' => [
-        'main' => 'Contacts',
-        'sub' => 'Contacts'
+        'main' => 'Contact Us',
+        'sub' => 'Create custom landing pages with Lavalite that converts
+        more visitors than any website.'
     ],
 
     /**
@@ -48,7 +49,33 @@ return [
      * Options for select/radio/check.
      */
     'options'       => [
-        'status'              => ['Show','Hide'],
+        'country' => 
+            [
+                                
+                [
+                    'key'    => 255,
+                    'value'  => 255,
+                    'text'   => 255,
+                ],
+                                
+            ],
+
+        'status' => 
+            [
+                                
+                [
+                    'key'    => 'Show',
+                    'value'  => 'Show',
+                    'text'   => 'Show',
+                ],
+                                
+                [
+                    'key'    => 'Hide',
+                    'value'  => 'Hide',
+                    'text'   => 'Hide',
+                ],
+                                
+            ],
     ],
 
     /**
@@ -110,4 +137,6 @@ return [
         'created_at'                 => 'Created at',
         'updated_at'                 => 'Updated at',
     ],
-];
+
+    
+    ];

@@ -3,13 +3,14 @@
 namespace Litecms\Contact\Http\Controllers;
 
 use Exception;
+use Litecms\Contact\Actions\ContactAction;
+use Litecms\Contact\Actions\ContactActions;
 use Litecms\Contact\Forms\Contact as ContactForm;
-use Litecms\Contact\Http\Requests\ContactRequest;
-use Litecms\Contact\Interfaces\ContactRepositoryInterface;
-use Litecms\Contact\Repositories\Eloquent\Filters\ContactResourceFilter;
-use Litecms\Contact\Repositories\Eloquent\Presenters\ContactListPresenter;
+use Litecms\Contact\Http\Requests\ContactResourceRequest;
+use Litecms\Contact\Http\Resources\ContactResource;
+use Litecms\Contact\Http\Resources\ContactsCollection;
+use Litecms\Contact\Models\Contact;
 use Litepie\Http\Controllers\ResourceController as BaseController;
-use Litepie\Repository\Filter\RequestFilter;
 
 /**
  * Resource controller class for contact.
@@ -23,12 +24,16 @@ class ContactResourceController extends BaseController
      *
      * @return null
      */
-    public function __construct(ContactRepositoryInterface $contact)
+    public function __construct()
     {
         parent::__construct();
-        $this->form = ContactForm::setAttributes()->toArray();
-        $this->modules = $this->modules(config('litecms.contact.modules'), 'contact', guard_url('contact'));
-        $this->repository = $contact;
+        $this->middleware(function ($request, $next) {
+            $this->form = ContactForm::grouped(false)
+                ->setAttributes()
+                ->toArray();
+            $this->modules = $this->modules(config('litecms.contact.modules'), 'contact', guard_url('contact'));
+            return $next($request);
+        });
     }
 
     /**
@@ -36,30 +41,21 @@ class ContactResourceController extends BaseController
      *
      * @return Response
      */
-    public function index(ContactRequest $request)
+    public function index(ContactResourceRequest $request)
     {
+        $request = $request->all();
+        $page = ContactActions::run('paginate', $request);
 
-        $pageLimit = $request->input('pageLimit', config('database.pagination.limit'));
-        $data = $this->repository
-            ->pushFilter(RequestFilter::class)
-            ->pushFilter(ContactResourceFilter::class)
-            ->setPresenter(ContactListPresenter::class)
-            ->simplePaginate($pageLimit)
-        // ->withQueryString()
-            ->toArray();
+        $data = new ContactsCollection($page);
 
-        extract($data);
         $form = $this->form;
         $modules = $this->modules;
-        $this->response->theme
-            ->asset()
-            ->container('footer')
-            ->add('gmap', 'https://maps.googleapis.com/maps/api/js?key=' . config('litecms.contact.gmapapi'));
 
         return $this->response->setMetaTitle(trans('contact::contact.names'))
             ->view('contact::contact.index')
-            ->data(compact('data', 'meta', 'links', 'modules', 'form'))
+            ->data(compact('data', 'modules', 'form'))
             ->output();
+
     }
 
     /**
@@ -70,14 +66,14 @@ class ContactResourceController extends BaseController
      *
      * @return Response
      */
-    public function show(ContactRequest $request, ContactRepositoryInterface $repository)
+    public function show(ContactResourceRequest $request, Contact $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new ContactResource($model);
         return $this->response
             ->setMetaTitle(trans('app.view') . ' ' . trans('contact::contact.name'))
-            ->data(compact('data', 'form', 'modules', 'form'))
+            ->data(compact('data', 'form', 'modules'))
             ->view('contact::contact.show')
             ->output();
     }
@@ -86,18 +82,19 @@ class ContactResourceController extends BaseController
      * Show the form for creating a new contact.
      *
      * @param Request $request
-     *x
+     *
      * @return Response
      */
-    public function create(ContactRequest $request, ContactRepositoryInterface $repository)
+    public function create(ContactResourceRequest $request, Contact $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new ContactResource($model);
         return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('contact::contact.name'))
             ->view('contact::contact.create')
             ->data(compact('data', 'form', 'modules'))
             ->output();
+
     }
 
     /**
@@ -107,20 +104,17 @@ class ContactResourceController extends BaseController
      *
      * @return Response
      */
-    public function store(ContactRequest $request, ContactRepositoryInterface $repository)
+    public function store(ContactResourceRequest $request, Contact $model)
     {
         try {
-            $attributes = $request->all();
-            $attributes['user_id'] = user_id();
-            $attributes['user_type'] = user_type();
-            $repository->create($attributes);
-            $data = $repository->toArray();
-
+            $request = $request->all();
+            $model = ContactAction::run('store', $model, $request);
+            $data = new ContactResource($model);
             return $this->response->message(trans('messages.success.created', ['Module' => trans('contact::contact.name')]))
                 ->code(204)
                 ->data(compact('data'))
                 ->status('success')
-                ->url(guard_url('contact/contact/' . $data['id']))
+                ->url(guard_url('contact/contact/' . $model->getRouteKey()))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
@@ -140,16 +134,18 @@ class ContactResourceController extends BaseController
      *
      * @return Response
      */
-    public function edit(ContactRequest $request, ContactRepositoryInterface $repository)
+    public function edit(ContactResourceRequest $request, Contact $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new ContactResource($model);
+        // return view('contact::contact.edit', compact('data', 'form', 'modules'));
 
         return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('contact::contact.name'))
             ->view('contact::contact.edit')
             ->data(compact('data', 'form', 'modules'))
             ->output();
+
     }
 
     /**
@@ -160,25 +156,24 @@ class ContactResourceController extends BaseController
      *
      * @return Response
      */
-    public function update(ContactRequest $request, ContactRepositoryInterface $repository)
+    public function update(ContactResourceRequest $request, Contact $model)
     {
-        // dd($repository->model);
         try {
-            $attributes = $request->all();
-            $repository->update($attributes);
-            $data = $repository->toArray();
+            $request = $request->all();
+            $model = ContactAction::run('update', $model, $request);
+            $data = new ContactResource($model);
 
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('contact::contact.name')]))
                 ->code(204)
                 ->status('success')
                 ->data(compact('data'))
-                ->url(guard_url('contact/contact/' . $data['id']))
+                ->url(guard_url('contact/contact/' . $model->getRouteKey()))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('contact/contact/' . $repository->getRouteKey()))
+                ->url(guard_url('contact/contact/' . $model->getRouteKey()))
                 ->redirect();
         }
 
@@ -191,11 +186,13 @@ class ContactResourceController extends BaseController
      *
      * @return Response
      */
-    public function destroy(ContactRequest $request, ContactRepositoryInterface $repository)
+    public function destroy(ContactResourceRequest $request, Contact $model)
     {
         try {
-            $repository->delete();
-            $data = $repository->toArray();
+
+            $request = $request->all();
+            $model = ContactAction::run('destroy', $model, $request);
+            $data = new ContactResource($model);
 
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('contact::contact.name')]))
                 ->code(202)
@@ -209,7 +206,7 @@ class ContactResourceController extends BaseController
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('contact/contact/' . $data['id']))
+                ->url(guard_url('contact/contact/' . $model->getRouteKey()))
                 ->redirect();
         }
 

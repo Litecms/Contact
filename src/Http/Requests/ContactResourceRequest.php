@@ -3,9 +3,8 @@
 namespace Litecms\Contact\Http\Requests;
 
 use Litepie\Http\Request\AbstractRequest;
-use Litecms\Contact\Models\Contact;
 
-class ContactRequest extends AbstractRequest
+class ContactResourceRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,12 +17,12 @@ class ContactRequest extends AbstractRequest
 
         if (is_null($this->model)) {
             // Determine if the user is authorized to access contact module,
-            return $this->formRequest->user()->can('view',app(Contact::class) );
+            return $this->user()->can('view', app(config('litecms.contact.contact.model.model')));
         }
 
         if ($this->isWorkflow()) {
             // Determine if the user is authorized to change status of an entry,
-            return $this->can($this->getStatus());
+            return $this->can($this->getTransition());
         }
 
         if ($this->isCreate() || $this->isStore()) {
@@ -37,7 +36,7 @@ class ContactRequest extends AbstractRequest
         }
 
         if ($this->isDelete()) {
-            // Determine if the user is authorized to destroy an entry,
+            // Determine if the user is authorized to delete an entry,
             return $this->can('destroy');
         }
 
@@ -56,18 +55,14 @@ class ContactRequest extends AbstractRequest
         if ($this->isStore()) {
             // validation rule for create request.
             return [
-                'email' => 'required|email',
-                'phone' => 'numeric',
-                'mobile' => 'numeric',
+
             ];
         }
 
         if ($this->isUpdate()) {
             // Validation rule for update request.
             return [
-                'email' => 'required|email',
-                'phone' => 'numeric',
-                'mobile' => 'numeric',
+
             ];
         }
 
@@ -76,4 +71,5 @@ class ContactRequest extends AbstractRequest
 
         ];
     }
+
 }
