@@ -28,7 +28,7 @@ class ContactResourceController extends BaseController
     {
         parent::__construct();
         $this->middleware(function ($request, $next) {
-            $this->form = ContactForm::grouped(false)
+            $this->form = ContactForm::only('main')
                 ->setAttributes()
                 ->toArray();
             $this->modules = $this->modules(config('litecms.contact.modules'), 'contact', guard_url('contact'));

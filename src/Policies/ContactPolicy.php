@@ -2,7 +2,7 @@
 
 namespace Litecms\Contact\Policies;
 
-use Litepie\User\Interfaces\UserPolicyInterface;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Litecms\Contact\Models\Contact;
 
 class ContactPolicy
@@ -12,14 +12,14 @@ class ContactPolicy
     /**
      * Determine if the given user can view the contact.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      * @param Contact $contact
      *
      * @return bool
      */
-    public function view(UserPolicyInterface $authUser, Contact $contact)
+    public function view(Authenticatable $user, Contact $contact)
     {
-        if ($authUser->canDo('contact.contact.view') && $authUser->isAdmin()) {
+        if ($user->canDo('contact.contact.view') && $user->isAdmin()) {
             return true;
         }
 
@@ -29,26 +29,26 @@ class ContactPolicy
     /**
      * Determine if the given user can create a contact.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function create(UserPolicyInterface $authUser)
+    public function create(Authenticatable $user)
     {
-        return  $authUser->canDo('contact.contact.create');
+        return  $user->canDo('contact.contact.create');
     }
 
     /**
      * Determine if the given user can update the given contact.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      * @param Contact $contact
      *
      * @return bool
      */
-    public function update(UserPolicyInterface $authUser, Contact $contact)
+    public function update(Authenticatable $user, Contact $contact)
     {
-        if ($authUser->canDo('contact.contact.edit') && $authUser->isAdmin()) {
+        if ($user->canDo('contact.contact.edit') && $user->isAdmin()) {
             return true;
         }
 
@@ -58,11 +58,11 @@ class ContactPolicy
     /**
      * Determine if the given user can delete the given contact.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function destroy(UserPolicyInterface $authUser, Contact $contact)
+    public function destroy(Authenticatable $user, Contact $contact)
     {
         return $contact->user_id == user_id() && $contact->user_type == user_type();
     }
@@ -70,13 +70,13 @@ class ContactPolicy
     /**
      * Determine if the given user can verify the given contact.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function verify(UserPolicyInterface $authUser, Contact $contact)
+    public function verify(Authenticatable $user, Contact $contact)
     {
-        if ($authUser->canDo('contact.contact.verify')) {
+        if ($user->canDo('contact.contact.verify')) {
             return true;
         }
 
@@ -86,13 +86,13 @@ class ContactPolicy
     /**
      * Determine if the given user can approve the given contact.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function approve(UserPolicyInterface $authUser, Contact $contact)
+    public function approve(Authenticatable $user, Contact $contact)
     {
-        if ($authUser->canDo('contact.contact.approve')) {
+        if ($user->canDo('contact.contact.approve')) {
             return true;
         }
 
@@ -102,14 +102,14 @@ class ContactPolicy
     /**
      * Determine if the user can perform a given action ve.
      *
-     * @param [type] $authUser    [description]
+     * @param [type] $user    [description]
      * @param [type] $ability [description]
      *
      * @return [type] [description]
      */
-    public function before($authUser, $ability)
+    public function before($user, $ability)
     {
-        if ($authUser->isSuperuser()) {
+        if ($user->isSuperuser()) {
             return true;
         }
     }
